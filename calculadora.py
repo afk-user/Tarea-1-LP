@@ -1,19 +1,9 @@
 import re
 
-'''
-operaciones binarias:
-    suma: 1 + 2
-    resta: 2 - 18
-    multiplicación: 5 * 7
-    división entera: 3 // 2
-
-'''
-
-digits_and_0 = '[0-9]+*'
-special_functions = r"(ANS|CUPON|CUPON(X,Y)"
-parentheses = r"((|))"
-multiplication_division = r"(*|//)"
-addition_substraction = r"(+|-)"
+special_functions = "(ANS|CUPON\(X\)|CUPON\(X,Y\))"
+parentheses = "(\(|\))"
+mult_div_ops = "\s*(\*|\/\/)\s*"
+add_sub_ops = "\s*(\+|\-)\s*"
 
 def CUPON(word,percent):
     return
@@ -26,32 +16,64 @@ def par_check(line):
         return True
     return False
 
-def calculate(exercise): 
-    while re.search((special_functions|parentheses|multiplication_division|addition_substraction),exercise) != None:
-        if re.search(special_functions,line) != None:
+def calculate(exercise):
+    solved_line=exercise; aux_line=""
+    while re.search("("+special_functions+"|"+parentheses+"|"+mult_div_ops+"|"+add_sub_ops+")",solved_line) != None:
+
+        search_sf = re.search(special_functions,solved_line)
+        search_parentheses = re.search(parentheses,solved_line)
+        search_mult_div = re.search(mult_div_ops,solved_line)
+        search_add_sub = re.search(add_sub_ops,solved_line)
+
+        aux1=0;aux2=0;operation=0
+
+        if search_sf != None:
             if last_ans == 0:
                 print("sin resolver")
             else:
-                line = re.sub("ANS",str(last_ans),line)
-                print(0)
+                solved_line = re.sub("ANS",str(last_ans),solved_line)
 
-        elif re.search(parentheses,line) != None:
-            x = re.search("\w+\s*\)",line) 
+        elif search_parentheses != None:
+            x = re.search("\w+\s*\)",solved_line) 
             print(x.group())
+            #calculate(lo que está dentro del paréntesis)
         
-        elif re.search(multiplication_division,line) != None:
-            print(2)
-        
-        elif re.search(addition_substraction,line) != None:
-            print(3)
-    return
+        elif search_mult_div != None:
+            aux_line = re.search("\d+"+mult_div_ops+"\d+",solved_line).group()
+            aux_line = re.sub(" ","",aux_line)
 
-def sum(num1,num2):
+            if r"*" in solved_line:
+                aux1,aux2 = re.split("\*",aux_line)
+                operation=str(int(aux1)*int(aux2))
+
+            elif r"//" in solved_line:
+                aux1,aux2 = re.split("\/\/",aux_line)
+                operation=str(int(aux1)//int(aux2))
+
+            solved_line=re.sub("\d+"+mult_div_ops+"\d+",operation,solved_line)
+        
+        elif search_add_sub != None:
+            aux_line = re.search("\d+"+add_sub_ops+"\d+",solved_line).group()
+            aux_line = re.sub(" ","",aux_line)
+
+            if r"+" in solved_line:
+                aux1,aux2 = re.split("\+",aux_line)
+                operation=str(int(aux1)+int(aux2))
+
+            elif r"-" in solved_line:
+                aux1,aux2 = re.split("\-",aux_line)
+                operation=str(int(aux1)-int(aux2))
+
+            solved_line=re.sub("\d+"+add_sub_ops+"\d+",operation,solved_line)
+
+    return solved_line
+
+def add_sub(num1,num2):
     return int(num1)+int(num2)
 
 
 # main
-questions_file=open("/home/nine/Documents/Informagia/LP/Tarea 1/problemas.txt","r")
+questions_file=open("/home/nine/Documents/Informagia/LP/Tarea 1/problemas (EJEMPLO).txt","r")
 for line in questions_file:
     line=re.sub("–","-",line.strip("\n"))
     par_flag=par_check(line)
@@ -59,16 +81,8 @@ for line in questions_file:
         curr_ans = 0
         last_ans = 0
     else:
-        '''
-        print(re.search("(ANS|CUPON|CUPON\(X,Y\))",line))
-        print(re.findall("(\(|\))",line))
-        print(re.search("(\*|//)",line)) 
-        print(re.search("(\+|-)",line)) 
-        '''
-        
-
-        curr_ans = eval(line)
-        print(curr_ans)
+        curr_ans = calculate(line)
+        print(line+" = "+curr_ans)
         last_ans = curr_ans
 questions_file.close()
 
