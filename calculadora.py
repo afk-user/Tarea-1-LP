@@ -127,7 +127,8 @@ def wrong_operations(line):
     op_args = re.findall("\d+|"+coupon_pattern+"|ANS",line)
     exponentials = re.search("\^",line)
     if len(op_args) == len(ops)+1 and len(ops) >= 1 and exponentials == None:
-        return True
+        if re.search(mult_div_ops+mult_div_ops,line) == None and re.search("(\d+|ANS|"+coupon_pattern+")\s+(\d+|ANS|"+coupon_pattern+")",line) == None:
+            return True
     return False
 
 def par_count(line):
