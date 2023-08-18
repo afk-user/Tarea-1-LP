@@ -1,0 +1,38 @@
+ANS + 130 * 25 = Sin resolver
+(2300 + 23 * (15) = Error
+500(7) = Error
+
+- 5 = Error
+CUPON(500,110) = Error
+CUPON(60,90) = Error
+
+ANS   + 7 * 4 – 1 = Sin resolver
+27 // 0 = Error
+(23 + 4) // (7 - 7) = Error
+3 + CUPON(10, 30) = Sin resolver
+
+ned + 5 = Error
+CUPON(120,50) * 4 + (21 – 3) // 3 = Sin resolver
+ANS = Error
+
+(1750 * (12 – 10) - 13) = Sin resolver
+aNs + AMS * 5 - 10 = Error
+10 // 2 + 1 * 50 = Sin resolver
+
+(ANS + 69) // 30 = Sin resolver
+CUPON ( 69 , 69 ) = Error
+
+1 +  * 4 // 5 = Error
+50     32 *(5 +  2) = Error
+2 ^ ANS = Error
+
+CUPON(10,) + 0 = Error
+CUPON(10,10,10) + 0 = Error
+(10) + 0 = Error
+
+CUPONCUPON(19) + 0 = Error
+ANSANS + 0 = Error
+ANSCUPON(10) + 0 = Error
+
+CUPONANS(100) + 0 = Error
+ANS(10) + 0 = Error
